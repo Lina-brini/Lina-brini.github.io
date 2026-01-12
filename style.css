@@ -1,0 +1,670 @@
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* GLOBAL */
+body {
+    background-color: #efefef; /* Le gris du fond */
+    margin: 0;      /* Supprime l'espace blanc autour du site */
+    padding: 0;
+}
+/* HEADER : Bandeau blanc fin */
+.header {
+    background-color: #ffffff !important;
+    width: 100%;
+    border-bottom: 1px solid #ddd;
+    height: 60px; /* On fixe la hauteur du bandeau ici */
+    display: flex;
+    align-items: center;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 70px;
+    position: relative;
+    /* Aligne le header sur la largeur des images */
+    max-width: 1220px; 
+    margin: 0 auto; /* Centre le bandeau de navigation */
+    width: 100%;
+} 
+
+.nav-left {
+    /* On enlève position: absolute pour qu'il suive le flux du max-width */
+    position: absolute; 
+    left: 0; /* Il se colle au bord gauche des 1220px */
+    display: flex;
+    align-items: center;
+}
+
+/* centre */
+.nav-center {
+  display: flex;
+  justify-content: center;
+}
+
+/* bouton menu */
+.menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 19px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+
+.menu-text {
+  font-size: 14px;
+  color: darkblue;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+
+/* Menu latéral */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: -320px;
+  width: 320px;
+  height: 100%;
+  background: white;
+  padding: 30px;
+  box-shadow: 2px 0 15px rgba(29, 10, 125, 0.2);
+  transition: left 0.3s ease;
+}
+
+/* Menu ouvert */
+.side-menu.active {
+  left: 0;
+}
+
+/* Liste */
+.side-menu ul {
+  list-style: none; /* supprime les points */
+  padding: 0;
+  margin: 0;
+}
+
+/* Items */
+.side-menu li {
+  padding: 18px 0;
+  font-size: 14px;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+/* Bouton spécial */
+.side-menu .cta {
+  font-weight: bold;
+  color: #1a2b6d;
+}
+
+
+.menu-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Flèche */
+.menu-arrow {
+  font-size: 18px;
+  color: #1a2b6d;
+}
+
+/* VOLET BLANC */
+.menu-main {
+    width: 320px;
+    padding: 60px 0 20px 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.close-btn {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 40px;
+    background: none;
+    border: none;
+    color: #1a2b6d;
+    cursor: pointer;
+}
+
+.main-links { list-style: none; }
+
+.menu-item {
+    padding: 15px 30px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1a2b6d;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    transition: background 0.2s;
+}
+
+.menu-item:hover, .menu-item.active-item {
+    background-color: #f5f5f5;
+}
+
+/* VOLET GRIS (DÉROULANT) */
+.menu-sub {
+    width: 350px;
+    background-color: #f9f9f9;
+    border-left: 1px solid #eee;
+    padding-top: 60px;
+    display: none; /* Masqué par défaut */
+}
+
+.menu-sub.open { display: block; }
+
+.sub-content { display: none; padding: 0 40px; }
+.sub-content.show { display: block; }
+
+.sub-content ul { list-style: none; }
+.sub-content li {
+    padding: 12px 0;
+    font-size: 13px;
+    color: #1a2b6d;
+    font-weight: 500;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+/* FOOTER DU MENU */
+.menu-footer { margin-top: auto; padding: 30px; }
+.enjoy-logo { width: 150px; margin: 15px 0; }
+.essai { font-weight: bold; font-size: 13px; color: black; }
+
+
+
+/* === MENU PRINCIPAL === */
+/* ========== OVERLAY ========== */
+.menu-overlay {
+  position: fixed;
+  top: 0;  /* ← CHANGE CE 0 en 60px */
+  left: 0;
+  width: 100%;
+  height: 100%;  /* ← CHANGE ÇA en calc(100% - 60px) */
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 998;
+}
+
+/* ======= MENU LATERAL PLEIN ÉCRAN GAUCHE ======= */
+.side-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(255, 255, 255, 0.96);
+  z-index: 9999;
+  display: flex;
+  justify-content: center; /* centre le contenu grille */
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+}
+
+.side-menu.active {
+  transform: translateX(0);
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 28px;
+  background: none;
+  border: none;
+  color: #1a2b6d;
+  cursor: pointer;
+}
+
+.main-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.main-links li {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a2b6d;
+  padding: 15px 0;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.main-links li .arrow {
+  font-size: 18px;
+  color: #1a2b6d;
+}
+.menu-main-col {
+  width: 320px;
+  background-color: white;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.menu-align-container {
+  width: 100%;
+  max-width: 1220px;
+  padding: 30px 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* colonne gauche + colonne droite */
+  gap: 20px;
+}
+.menu-grid-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.menu-grid-col img {
+  max-width: 100%;
+  height: auto;
+  object-fit: cover;
+  max-height: calc(100vh - 60px); /* éviter de dépasser l'écran */
+}
+/* === SOUS-MENU === */
+.menu-sub-col {
+  position: absolute;
+  left: 320px;
+  top: 0;
+  width: 320px;
+  height: 100%;
+  background-color: #f9f9f9;
+  border-left: 1px solid #eee;
+  display: none;
+  flex-direction: column;
+  padding-top: 80px;
+}
+
+.menu-sub-col.open {
+  display: flex;
+}
+
+.sub-content {
+  display: none;
+  padding: 0 30px;
+}
+
+.sub-content.show {
+  display: block;
+}
+
+.sub-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sub-content li {
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1a2b6d;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.has-submenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 16px;
+  color: #1a2b6d;
+  margin-left: auto;
+}
+/* === PIED DE MENU === */
+.menu-footer-content {
+  padding: 20px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* très important : pour garder l'alignement à gauche */
+  max-width: 1220px;
+  margin: 0 auto;
+  padding-left: 30px; /* adapte si nécessaire selon tes autres padding */
+}
+
+.extra-content {
+  padding: 10px 0;
+  border-bottom: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.enjoy-logo {
+  width: 80px;
+}
+
+.black-link {
+  font-weight: bold;
+  font-size: 13px;
+  color: #1a2b6d;
+  text-decoration: none;
+}
+
+.black-link:hover {
+  text-decoration: underline;
+}
+.section-title {
+  width: 100%;
+  max-width: 1220px;   /* même que ton .nav et ton menu */
+  margin: 60px auto 20px auto;  /* espace haut et bas + centrage horizontal */
+  padding: 0 20px;     /* pour éviter que ça touche les bords sur mobile */
+  font-size: 19px;     /* ajustable */
+  color: #1a2b6d;      /* ou ce que tu veux */
+  text-transform: uppercase;  /* si tu veux le style SUZUKI */
+}
+/* LOGO */
+.logo {
+  display: flex;
+  justify-content: center;
+}
+
+.logo img {
+    height: 40px;    /* On réduit la taille pour que ça rentre dans le bandeau */
+    width: auto;     /* Garde les proportions */
+    display: block;
+}
+
+/* ZONES IMAGES */
+.zone {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+/* TITRES */
+
+.slider {
+  position: relative;
+  width: 100%;
+  max-width: 1220px; /* Largeur combinée des images du bas (600+20+600) */
+  margin: 0 auto;    /* Centre le bloc sur la page */
+  overflow: hidden;
+  padding-top: 10px;
+}
+
+.slides {
+  position: relative;
+}
+
+.slide {
+  width: 100%;
+  display: none;
+}
+
+.slide.active {
+  display: block;
+}
+
+/* Flèches */
+
+.arrow {
+  position: absolute; /* Sort du flux pour monter sur l'image */
+  top: 50%;           /* Centre verticalement */
+  transform: translateY(-50%); /* Ajustement parfait du centrage */
+  background: rgba(0,0,0,0.5);
+  color: white;
+  border: none;
+  font-size: 30px;
+  padding: 10px 15px;
+  cursor: pointer;
+  z-index: 10;        /* Passe devant l'image */
+}
+
+.arrow.left {
+  left: 15px;         /* Colle à gauche de l'image */
+}
+
+.arrow.right {
+  right: 15px;        /* Colle à droite de l'image */
+}
+
+.arrow:hover {
+  background: rgba(0,0,0,0.8);
+}
+
+.zone-2 {
+  display: flex;
+  justify-content: center; /* Centre les deux images */
+  gap: 20px;               /* L'espace entre les images */
+  max-width: 1220px;       /* Même largeur que le slider */
+  margin: 40px auto;       /* Centre la zone entière */
+}
+
+.zone-2 img {
+  width: 600px;
+  height: auto;
+  display: block;
+}
+
+
+.zone-3 {
+  display: flex;
+  gap: 30px;
+  max-width: 1220px;
+  margin: 60px auto;
+}
+
+/* Carte cliquable */
+.card {
+  position: relative;
+  width: 100%;
+  text-decoration: none;
+  color: #1a1a1a;
+}
+
+/* Image */
+.card img {
+  width: 100%;
+  display: block;
+}
+
+/* Bandeau blanc */
+.card-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: white;
+  padding: 20px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Texte */
+.card-text p {
+  font-size: 19px;
+  line-height: 1.4;
+  max-width: 90%;
+}
+
+/* Petite flèche */
+.card-arrow {
+  font-size: 50px;
+  color: #1a2b6d;
+  font-weight: bold;
+}
+
+.content-page2 {
+  max-width: 1220px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.zone-experience {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 60px;
+}
+.suzuki-experience {
+  display: flex;
+  flex-direction: row;
+  max-width: 1220px;
+  margin: 60px auto;
+  padding: 0 20px;
+  align-items: flex-start;
+  gap: 40px;
+}
+
+.suzuki-experience.reverse {
+  flex-direction: row-reverse;
+}
+
+.experience-img img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  display: block;
+  border-radius: 6px;
+}
+
+.experience-texte {
+  flex: 1;
+}
+
+.experience-texte h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #1a2b6d;
+}
+
+.experience-texte p {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+  color: #1a2b6d;
+}
+
+
+/* Titre principal */
+.main-title {
+  font-size: 28px;
+  font-weight: 900;
+  color: #1a2b6d;
+  line-height: 1.3;
+}
+
+
+
+/* Bouton bleu */
+.btn-suzuki-bleu {
+  background-color: #1a2b6d;
+  color: white;
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-suzuki-bleu:hover {
+  background-color: #0f1b4c;
+}
+.footer {
+  width: 100%;
+  font-family: Arial, sans-serif;
+  margin-top: 50px;
+}
+
+/* Bloc gris clair pour les réseaux sociaux */
+.footer-social-section {
+  background-color: #eeeaea;
+  padding: 30px 0;
+  text-align: center;
+  max-width: 1220px; /* Aligné avec ton slider */
+  margin: 0 auto;
+}
+
+.footer-social-section p {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 100px;
+}
+
+.social-icons img {
+  width: 25px;
+  height: 25px;
+  filter: grayscale(100%); /* Pour des icônes noires comme sur l'image */
+  transition: 0.3s;
+}
+
+.social-icons img:hover {
+  filter: grayscale(0%);
+}
+
+/* Section du bas (Logo et mentions) */
+.footer-bottom {
+  padding: 30px 0;
+  text-align: center;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 150px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+
+.footer-links a {
+  text-decoration: none;
+  color: black;
+}
+
+.footer-logo img {
+  height: 40px; /* Ajuste la taille du logo Suzuki ici */
+}
+
+.eco-message {
+  font-size: 13px;
+  color: #1d2b6d; /* Bleu Suzuki */
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  text-align: center;
+  margin-bottom: 100px;
+}
